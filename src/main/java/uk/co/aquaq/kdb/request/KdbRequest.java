@@ -9,5 +9,5 @@ public class KdbRequest {
     private String functionName;
     private String arguments;
     private String functionTemplate;
-    c.Dict credentialDictionary;
+    private c.Dict credentialDictionary;
 }

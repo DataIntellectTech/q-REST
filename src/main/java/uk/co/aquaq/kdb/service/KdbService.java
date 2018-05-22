@@ -40,6 +40,7 @@ public class KdbService {
         } else if (queryRequest.getType().equals("async")) {
             create(queryRequest.getQuery());
         }
+
         return new ArrayList<>();
     }
 
@@ -61,6 +62,7 @@ public class KdbService {
         catch (Exception exception) {
             logger.warn(exception.getMessage());
         }
+
         return results;
     }
 }

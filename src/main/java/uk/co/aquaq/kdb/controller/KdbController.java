@@ -22,7 +22,7 @@ public class KdbController {
 
     @CrossOrigin
     @RequestMapping(value = "/executeFunction", method = RequestMethod.POST)
-    public Object functionalRead(@RequestBody FunctionRequest functionRequest, @RequestHeader("Authorization") String authString) {
+    public Object executeFunction(@RequestBody FunctionRequest functionRequest, @RequestHeader("Authorization") String authString) {
         BasicCredentials authDetails =new BasicCredentials(authString);
         return kdbService.executeFunction(functionRequest, authDetails);
     }
