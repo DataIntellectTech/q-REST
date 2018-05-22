@@ -1,0 +1,7 @@
+### IDEA Project stuff:
+.idea/*
+*.iml
+
+
+### Maven
+target/
