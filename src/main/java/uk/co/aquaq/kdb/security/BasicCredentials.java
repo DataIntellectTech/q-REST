@@ -11,16 +11,12 @@ public class BasicCredentials {
     String username;
     String password;
 
-    private BasicCredentials(String[] credentials){
+    public BasicCredentials (String authString) {
+        String base64Credentials = authString.substring("Basic".length()).trim();
+        String credentialsValue = new String(Base64.decodeBase64(base64Credentials),
+                Charset.forName("UTF-8"));
+        String[] credentials= credentialsValue.split(":",2);
         this.username = credentials[0];
         this.password = credentials[1];
-    }
-
-    public static BasicCredentials getInstance(String authString) {
-        String base64Credentials = authString.substring("Basic".length()).trim();
-        String credentials = new String(Base64.decodeBase64(base64Credentials),
-                Charset.forName("UTF-8"));
-
-        return new BasicCredentials(credentials.split(":",2));
     }
 }
