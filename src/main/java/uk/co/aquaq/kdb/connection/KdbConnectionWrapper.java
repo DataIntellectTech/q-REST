@@ -7,9 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import uk.co.aquaq.kdb.request.KdbRequest;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
@@ -27,16 +24,6 @@ public class KdbConnectionWrapper {
     private String username;
     @Value("${kdb.password}")
     private String password;
-
-    @PostConstruct
-    public void postConstruct() {
-        open();
-    }
-
-    @PreDestroy
-    public void preDestroy()  throws IOException {
-        close();
-    }
 
     private void open(){
         try {
@@ -60,25 +47,39 @@ public class KdbConnectionWrapper {
         if (connectionToKdb != null) {
                 connectionToKdb.close();
                 connectionToKdb = null;
-        } else {
-            throw new KdbConnectionException("Cannot close Connection");
         }
     }
 
     public void executeAsyncQuery(String query) throws IOException {
-        connectionToKdb.ks(query);
+        try {
+            connectionToKdb.ks(query);
+        }
+        finally {
+            close();
+        }
     }
 
     public Object executeDeferredSyncFunction(KdbRequest kdbRequest) throws c.KException , IOException{
-        connectionToKdb.ks(kdbRequest.getFunctionTemplate(),
-                new Object[]{kdbRequest.getFunctionName().toCharArray(),
-                        kdbRequest.getArguments().toCharArray()},
-                kdbRequest.getCredentialDictionary());
-
-        return connectionToKdb.k();
+        try {
+            open();
+            connectionToKdb.ks(kdbRequest.getFunctionTemplate(),
+                    new Object[]{kdbRequest.getFunctionName().toCharArray(),
+                            kdbRequest.getArguments().toCharArray()},
+                    kdbRequest.getCredentialDictionary());
+            Object  response=connectionToKdb.k();
+           logger.warn(kdbRequest.hashCode()+"response:"+response.toString());
+            return response;
+        }finally {
+            close();
+        }
     }
 
     public Object syncQuery(String query) throws IOException, c.KException {
-        return c.td(connectionToKdb.k(query));
+        try {
+            open();
+            return c.td(connectionToKdb.k(query));
+        }finally {
+            close();
+        }
     }
 }
