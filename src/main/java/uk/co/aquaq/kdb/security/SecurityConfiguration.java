@@ -33,7 +33,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser(user).password(password).authorities("ROLE_USER");
     }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()

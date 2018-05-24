@@ -26,10 +26,20 @@ public class KdbService {
 
     public Object executeFunction(FunctionRequest functionRequest, BasicCredentials credentialValues){
         KdbRequest kdbRequest= KdbRequestBuilder.buildKdbRequest(functionRequest,credentialValues);
+        List<Map<String,String>> results = null;
         try {
-            return kdbConnector.executeDeferredSyncFunction(kdbRequest);
+            Object functionResult= kdbConnector.executeDeferredSyncFunction(kdbRequest);
+            if(functionResult instanceof c.Flip){
+                c.Flip flip= (c.Flip)kdbConnector.executeDeferredSyncFunction(kdbRequest);
+                FlipConverter flipConverter = new FlipConverter();
+                results= flipConverter.convertFlipToRecordList(flip);
+                return results;
+            }
+            else{
+                return functionResult;
+            }
         } catch (Exception exception) {
-            logger.warn(exception.getMessage());
+            logger.warn( exception.getMessage());
         }
         return null;
     }

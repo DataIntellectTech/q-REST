@@ -15,7 +15,7 @@ public class KdbRequestBuilder {
     private static String functionTemplate;
 
     @Value("${function}")
-    public void setDatabase(String functionTemplate) {
+    public void setFunctionTemplate(String functionTemplate) {
         this.functionTemplate = functionTemplate;
     }
 
