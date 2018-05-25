@@ -8,6 +8,6 @@ public class KdbRequest {
 
     private String functionName;
     private String arguments;
-    private String functionTemplate;
+    private String gatewayFunction;
     private c.Dict credentialDictionary;
 }

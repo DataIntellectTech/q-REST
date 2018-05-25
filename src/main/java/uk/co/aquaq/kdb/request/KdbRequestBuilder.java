@@ -11,12 +11,11 @@ import java.util.Map;
 public class KdbRequestBuilder {
 
     private KdbRequestBuilder (){}
+    private static String gatewayFunction;
 
-    private static String functionTemplate;
-
-    @Value("${function}")
-    public void setFunctionTemplate(String functionTemplate) {
-        this.functionTemplate = functionTemplate;
+    @Value("${gateway.function}")
+    public void setGatewayFunction(String gatewayFunctionProp) {
+        gatewayFunction = gatewayFunctionProp;
     }
 
     public static KdbRequest buildKdbRequest(FunctionRequest functionRequest, BasicCredentials basicCredentials){
@@ -24,7 +23,7 @@ public class KdbRequestBuilder {
         kdbRequest.setArguments(buildArgString(functionRequest.getArguments()));
         kdbRequest.setFunctionName(functionRequest.getFunction_name());
         kdbRequest.setCredentialDictionary(new c.Dict(new String[]{"user"},new String[]{basicCredentials.getUsername()}));
-        kdbRequest.setFunctionTemplate(functionTemplate);
+        kdbRequest.setGatewayFunction(gatewayFunction);
 
         return kdbRequest;
     }

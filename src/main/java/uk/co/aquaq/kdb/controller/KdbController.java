@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 public class KdbController {
+
     @Autowired
     KdbService kdbService;
     @Value("${freeform.query.mode.enabled}")
@@ -24,6 +25,7 @@ public class KdbController {
     @RequestMapping(value = "/executeFunction", method = RequestMethod.POST)
     public Object executeFunction(@RequestBody FunctionRequest functionRequest, @RequestHeader("Authorization") String authString) {
         BasicCredentials authDetails =new BasicCredentials(authString);
+
         return kdbService.executeFunction(functionRequest, authDetails);
     }
 
@@ -31,8 +33,8 @@ public class KdbController {
     @RequestMapping(value = "/executeQuery", method = RequestMethod.POST)
     public List<Map<String, String>> executeQuery(@RequestBody QueryRequest queryRequest){
         if (freeFormQueryEnabled) {
-            return kdbService.executeQuery(queryRequest);
 
+            return kdbService.executeQuery(queryRequest);
         } else {
             throw new InvalidRequestException("Invalid Request Free form queries not enabled.");
         }

@@ -43,8 +43,6 @@ public class KdbConnectionWrapper {
         return (username != null ? username : "") + ':' + (password != null ? password : "");
     }
 
-
-
     public void executeAsyncQuery(String query) throws IOException {
         c connectionToKdb=open();
         try {
@@ -59,7 +57,7 @@ public class KdbConnectionWrapper {
     public Object executeDeferredSyncFunction(KdbRequest kdbRequest) throws c.KException , IOException{
         c connectionToKdb=open();
         try {
-            connectionToKdb.ks(kdbRequest.getFunctionTemplate(),
+            connectionToKdb.ks(kdbRequest.getGatewayFunction(),
                     new Object[]{kdbRequest.getFunctionName().toCharArray(),
                             kdbRequest.getArguments().toCharArray()},
                     kdbRequest.getCredentialDictionary());
