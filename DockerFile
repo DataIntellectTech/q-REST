@@ -1,0 +1,5 @@
+FROM java:8
+VOLUME /tmp
+EXPOSE 8080
+ADD /target/kdb-rest-service-1.1-SNAPSHOT.jar kdb-rest-service-1.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","kdb-rest-service-1.1-SNAPSHOT.jar"]
