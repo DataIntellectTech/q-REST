@@ -1,6 +1,6 @@
 # kdb-rest-service
 
-This is an open source rest service written in java which can be used to connect to an instance of kdb using json. The rest service can provide a single query to run or call a function predefined on the instance of kdb.
+An open source REST service written in java used to connect to an instance of kdb using JSON. The REST service can provide a single query to run or call a function predefined on the instance of kdb.
 
 ## Pre-requisite Configuration 
 ##### Properties
@@ -67,4 +67,4 @@ There is a DockerFile within the project for deploying the project on docker.
 Alternatively it can be run locally by providing the appropriate build configuration via command line or IDE. 
 
 ## Contributing 
-The branch is currently locked down and will require a pull request reviewed by a member of the AQUAQ team before any changes can be committed.
+The branch is currently locked down and will require a pull request reviewed by a member of the AquaQ team before any changes can be committed.
