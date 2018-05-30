@@ -66,5 +66,22 @@ There is a DockerFile within the project for deploying the project on docker.
 
 Alternatively it can be run locally by providing the appropriate build configuration via command line or IDE. 
 
+To run the application by command line:
+
+Either pull the code from github, update `application.properties` and maven clean install to create the new jar then run:
+
+    java -jar target\kdb-rest-service-1.1-SNAPSHOT.jar
+
+ OR
+ 
+Download the most recent jar from release section of github master (https://github.com/AquaQAnalytics/kdb-rest-service/releases/), create a new properties file in a location of your choice to override the default properties and run this command
+
+    java -jar -Dspring.profiles.active=test -Dspring.config.location=C:\Programming\application-test.properties target\kdb-rest-service-1.1-SNAPSHOT.jar
+
+* -Dspring.profiles.active would be the profile you wish to run the application with which would have its own `application-{profileName}.properties` file. 
+
+* -Dspring.config.location would be the location of the custom properties file.
+
+
 ## Contributing 
 The branch is currently locked down and will require a pull request reviewed by a member of the AquaQ team before any changes can be committed.
