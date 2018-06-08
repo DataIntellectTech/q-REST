@@ -33,30 +33,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser(user).password(password).authorities("ROLE_USER");
     }
-    @Override
+
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable().authorizeRequests()
-                .antMatchers("/executeFunction").permitAll()
-                .antMatchers("/executeQuery").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        http.csrf().disable()
+                .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic()
-                .authenticationEntryPoint(authEntryPoint);
-    }
+                .httpBasic();
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("/**");
-            }
-        };
     }
 }

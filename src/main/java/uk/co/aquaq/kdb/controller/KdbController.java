@@ -21,7 +21,6 @@ public class KdbController {
     @Value("${freeform.query.mode.enabled}")
     boolean freeFormQueryEnabled;
 
-    @CrossOrigin
     @RequestMapping(value = "/executeFunction", method = RequestMethod.POST)
     public Object executeFunction(@RequestBody FunctionRequest functionRequest, @RequestHeader("Authorization") String authString) {
         BasicCredentials authDetails =new BasicCredentials(authString);
@@ -29,9 +28,8 @@ public class KdbController {
         return kdbService.executeFunction(functionRequest, authDetails);
     }
 
-    @CrossOrigin
     @RequestMapping(value = "/executeQuery", method = RequestMethod.POST)
-    public List<Map<String, String>> executeQuery(@RequestBody QueryRequest queryRequest){
+    public List<Map<String, Object>> executeQuery(@RequestBody QueryRequest queryRequest){
         if (freeFormQueryEnabled) {
 
             return kdbService.executeQuery(queryRequest);

@@ -45,7 +45,7 @@ public class KdbService {
         return functionResult;
     }
 
-    public List<Map<String, String>> executeQuery(QueryRequest queryRequest){
+    public List<Map<String, Object>> executeQuery(QueryRequest queryRequest){
         if (queryRequest.getType().equals("sync") && queryRequest.getResponse().equals("true")) {
             return syncRead(queryRequest.getQuery());
         } else if (queryRequest.getType().equals("async")) {
@@ -63,8 +63,8 @@ public class KdbService {
         }
     }
 
-    private List<Map<String,String>> syncRead(String jsonString ){
-        List<Map<String,String>> results = null;
+    private List<Map<String,Object>> syncRead(String jsonString ){
+        List<Map<String,Object>> results = null;
         try{
            c.Flip flip = (c.Flip)kdbConnector.syncQuery(jsonString);
             FlipConverter flipConverter = new FlipConverter();
