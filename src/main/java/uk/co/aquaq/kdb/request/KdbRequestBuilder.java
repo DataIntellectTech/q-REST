@@ -1,6 +1,6 @@
 package uk.co.aquaq.kdb.request;
 
-import com.kx.c;
+import kx.c;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.co.aquaq.kdb.security.BasicCredentials;

@@ -1,12 +1,14 @@
 package uk.co.aquaq.kdb.connection;
 
+import kx.c;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
-import com.kx.c;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import uk.co.aquaq.kdb.request.KdbRequest;
+import uk.co.aquaq.kdb.request.QueryRequest;
+import uk.co.aquaq.kdb.security.BasicCredentials;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -67,12 +69,16 @@ public class KdbConnectionWrapper {
         }
     }
 
-    public Object syncQuery(String query) throws IOException, c.KException {
+    public Object executeDeferredSyncQuery(QueryRequest queryRequest,BasicCredentials credentialValues) throws c.KException , IOException{
         c connectionToKdb=open();
         try {
-            return c.td(connectionToKdb.k(query));
+            String value="value";
+            connectionToKdb.ks(queryRequest.getGatewayFunction(),
+                    new Object[]{value.toCharArray(),queryRequest.getQuery().toCharArray()},new c.Dict(new String[]{"user"},new String[]{credentialValues.getUsername()}));
+            return  connectionToKdb.k();
         }finally {
             connectionToKdb.close();
         }
     }
+
 }

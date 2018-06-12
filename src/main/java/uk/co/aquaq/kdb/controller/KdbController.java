@@ -20,19 +20,21 @@ public class KdbController {
     KdbService kdbService;
     @Value("${freeform.query.mode.enabled}")
     boolean freeFormQueryEnabled;
-
+    @CrossOrigin
     @RequestMapping(value = "/executeFunction", method = RequestMethod.POST)
     public Object executeFunction(@RequestBody FunctionRequest functionRequest, @RequestHeader("Authorization") String authString) {
         BasicCredentials authDetails =new BasicCredentials(authString);
 
         return kdbService.executeFunction(functionRequest, authDetails);
     }
-
+    @CrossOrigin
     @RequestMapping(value = "/executeQuery", method = RequestMethod.POST)
-    public List<Map<String, Object>> executeQuery(@RequestBody QueryRequest queryRequest){
+    public Object executeQuery(@RequestBody QueryRequest queryRequest,@RequestHeader("Authorization") String authString){
+        BasicCredentials authDetails =new BasicCredentials(authString);
+
         if (freeFormQueryEnabled) {
 
-            return kdbService.executeQuery(queryRequest);
+            return kdbService.executeQuery(queryRequest,authDetails);
         } else {
             throw new InvalidRequestException("Invalid Request Free form queries not enabled.");
         }
