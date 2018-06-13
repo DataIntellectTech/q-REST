@@ -25,7 +25,6 @@ public final class FlipConverter {
     private  List<Map<String, Object>> populateRecordList(String[] columnHeaders, List<Object> records, c.Flip flip){
         List<Map<String, Object>> recordList = new ArrayList<>();
         List<Object[]> tableDataList = FlipConverter.convertToDataArrays(flip);
-
         for(int rowPosition = 0; rowPosition < records.size(); rowPosition++) {
             Object[] dataRow = tableDataList.get(rowPosition);
             Map<String,Object> tableRecords= createTableRecordMap(columnHeaders, dataRow);

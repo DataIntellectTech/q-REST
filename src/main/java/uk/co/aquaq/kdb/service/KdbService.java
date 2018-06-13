@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.co.aquaq.kdb.connection.KdbConnectionWrapper;
-import uk.co.aquaq.kdb.converter.FlipConverter;
+import uk.co.aquaq.kdb.converter.ResultFormatter;
 import uk.co.aquaq.kdb.request.QueryRequest;
 import uk.co.aquaq.kdb.request.FunctionRequest;
 import uk.co.aquaq.kdb.request.KdbRequest;
@@ -38,7 +38,6 @@ public class KdbService {
         return null;
     }
 
-
     public Object executeQuery(QueryRequest queryRequest, BasicCredentials credentialValues){
         String timestamp=Instant.now().toString();
         try {
@@ -57,31 +56,10 @@ public class KdbService {
         return new ArrayList<>();
     }
 
-    private List<Map<String, Object>> formatResult(Object functionResult) throws UnsupportedEncodingException {
-        List<Map<String, Object>> results;
-        if(functionResult instanceof c.Flip){
-            results= convertFlip((c.Flip) functionResult);
-        }
-        else if(isDictionaryWithStringKey(functionResult)) {
-            results = formatDictionary((c.Dict) functionResult);
-        }
-        else{
-            results=handleResult(functionResult);
-        }
-        return results;
-    }
-
-    private boolean isDictionaryWithStringKey(Object functionResult) {
-        return functionResult instanceof c.Dict &&(((c.Dict) functionResult).x instanceof String[]);
-    }
-
-    private List<Map<String, Object>> convertFlip(c.Flip functionResult) {
-        FlipConverter flipConverter = new FlipConverter();
-        return flipConverter.convertFlipToRecordList(functionResult);
-    }
 
     private List<Map<String, Object>> formatDeferredSyncResult(String timestamp, Object result) throws UnsupportedEncodingException {
-        List<Map<String, Object>> results = formatResult(result);
+        ResultFormatter resultFormatter=new ResultFormatter();
+        List<Map<String, Object>> results = resultFormatter.formatResult(result);
         addSuccessResponse(results, timestamp);
         return results;
     }
@@ -92,54 +70,6 @@ public class KdbService {
         } catch (Exception exception) {
             logger.warn(exception.getMessage());
         }
-    }
-
-    private List<Map<String, Object>> formatDictionary(c.Dict result) throws UnsupportedEncodingException {
-        List<Map<String, Object>> results= new ArrayList<>();
-        String[] keys=(String[])result.x;
-        Object[] values=(Object[])result.y;
-        for(int count=0; count<keys.length; count++){
-            createResultsMap(results, keys[count], values[count]);
-        }
-        return results;
-    }
-
-    private void createResultsMap(List<Map<String, Object>> results, String key, Object resultValue) throws UnsupportedEncodingException {
-        Map<String, Object> resultsMap= new HashMap<>();
-        if(isFlippableDictionary(resultValue) ||resultValue instanceof c.Flip ) {
-            c.Flip flip = c.td(resultValue);
-            List<Map<String, Object>> flipResults = convertFlip(flip);
-            formatFlipResultsToMap(results, flipResults);
-        }
-        else {
-            resultsMap.put(key, resultValue);
-            results.add(resultsMap);
-        }
-    }
-
-    private void formatFlipResultsToMap(List<Map<String, Object>> results, List<Map<String, Object>> flipResults) {
-        Map<String, Object> resultsMap;
-        for(Map<String, Object> flipMap : flipResults) {
-            resultsMap= new HashMap<>();
-
-            for (String key : flipMap.keySet()) {
-                resultsMap.put(key, flipMap.get(key));
-            }
-            results.add(resultsMap);
-        }
-    }
-
-    private boolean isFlippableDictionary(Object valueResult) {
-        return valueResult instanceof c.Dict && (((c.Dict)valueResult).x instanceof c.Flip) && (((c.Dict)valueResult).y instanceof c.Flip );
-    }
-
-    private List<Map<String, Object>> handleResult(Object result) {
-        List<Map<String, Object>> results= new ArrayList<>();
-        Map<String, Object> resultsMap= new HashMap<>();
-        resultsMap.put("result", result);
-        results.add(resultsMap);
-
-        return results;
     }
 
     private List<Map<String, Object>> generateFailureMessage(String jsonString, String startTime, String exceptionMessage) {
@@ -156,11 +86,33 @@ public class KdbService {
 
     private void addSuccessResponse(List<Map<String, Object>> results,String startTime ) {
         HashMap<String, Object> responseMap=new HashMap<>();
-        responseMap.put("Success", results.get(0).get("status"));
-        results.remove(0);
+        updateStatus(results, responseMap);
         responseMap.put("RequestTime",startTime);
         responseMap.put("ResponseTime",Instant.now().toString());
+        embedResults(results, responseMap);
         results.add(0,responseMap);
 
+    }
+
+    private void embedResults(List<Map<String, Object>> results, HashMap<String, Object> responseMap) {
+        List<Map<String, Object>> completeResults = new ArrayList<>(results);
+        Object result=completeResults.get(0).get("result");
+        results.clear();
+        if(result!=null){
+            responseMap.put("Results",result);
+        }
+        else {
+            responseMap.put("Results", completeResults);
+        }
+    }
+
+    private void updateStatus(List<Map<String, Object>> results, HashMap<String, Object> responseMap) {
+        if(null !=results.get(0).get("status")) {
+            responseMap.put("Success", results.get(0).get("status"));
+            results.remove(0);
+        }
+        else{
+            responseMap.put("Success", "true");
+        }
     }
 }
