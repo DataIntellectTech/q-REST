@@ -62,7 +62,7 @@ e.g. QueryRequest
     }
 
 ##### Response from Rest API
-The json response for the endpoint calls will comprise of 4 parts: result, requestTime, responseTime and success. 
+The json response for the endpoint calls will comprise of 4 parts: `result`, `requestTime`, `responseTime` and `success`. 
 
 - Result is the response returned by KDB with some additional parsing.
 
@@ -73,7 +73,7 @@ The json response for the endpoint calls will comprise of 4 parts: result, reque
 - Success is a boolean which lets user know if the call to kdb was a success.
 
 
-e.g. "query" : "([]a:enlist\"hello world\")" this should return a single item
+e.g. `"query" : "([]a:enlist\"hello world\")"` this should return a single item
     
     
     [
@@ -88,7 +88,7 @@ e.g. "query" : "([]a:enlist\"hello world\")" this should return a single item
             "success": true
         }
     ]
-"query" : "([]a:(\"hello\";\"world\"))" this should return a list of strings
+e.g. `"query" : "([]a:(\"hello\";\"world\"))"` this should return a list of strings
 
     [
         {
@@ -108,7 +108,7 @@ e.g. "query" : "([]a:enlist\"hello world\")" this should return a single item
     
 Failure response will follow a similar pattern except result will the error returned
 
-"query" : "([]a:enlist”hello world”) ",
+e.g `"query" : "([]a:enlist hello world)"` Failure response (query should have quotes around the hello world therefore KDB fails) will follow a similar pattern except result will be the error returned
     
     [
         {
