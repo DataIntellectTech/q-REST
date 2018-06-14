@@ -28,13 +28,14 @@ The rest service uses basic authentication and is using a single username and pa
     basic.authentication.password=pass
 
 These value are provided within the header of the request, it is strongly recommended to invoke your own security if you use the project.
-#### EndPoints
-The kdb-rest-service provides two endpoints:executeFunction and executeQuery. 
 
+## EndPoints
+
+The kdb-rest-service provides two endpoints: executeFunction and executeQuery. 
 
 ##### ExecuteFunction Request
 The executeFunction provides a means to call a predefined function and pass parameters to the kdb instance. 
-For example this is the format of a request call a function called plus which passes two arguments labelled "xarg" and "yarg" with values 96.3 and 9.7:
+For example this is the format of a request calling a function called plus which passes two arguments labelled "xarg" and "yarg" with values 96.3 and 9.7:
 
 e.g. FunctionRequest
     
@@ -61,7 +62,7 @@ e.g. QueryRequest
     }
 
 ##### Response from Rest API
-The json response for the endpoint calls will comprise of 4 parts: result, requestTime, responseTime, Success. 
+The json response for the endpoint calls will comprise of 4 parts: result, requestTime, responseTime and success. 
 
 - Result is the response returned by KDB with some additional parsing.
 
@@ -141,7 +142,7 @@ Download the most recent jar from release section of github master (https://gith
 
 * -Dspring.config.location would be the location of the custom properties file.
 
-##Swagger UI
+## Swagger UI
 The application has incorporated the Swagger UI utilities, to access the swagger page load the application and hit the swagger url:
 
     https://<host>:<port>/swagger-ui.html
