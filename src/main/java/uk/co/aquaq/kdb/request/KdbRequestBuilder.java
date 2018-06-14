@@ -35,14 +35,14 @@ public class KdbRequestBuilder {
         Map.Entry<String, String> entry;
         while(null != (entry = iterator.next())){
             stringBuilder.append(entry.getKey());
-            stringBuilder.append("\":");
+            stringBuilder.append("\":\"");
             stringBuilder.append(entry.getValue());
             if(iterator.hasNext()){
-                stringBuilder.append(",\"");
+                stringBuilder.append("\",\"");
             }
             else break;
         }
-        stringBuilder.append("}");
+        stringBuilder.append("\"}");
 
         return stringBuilder.toString();
     }
