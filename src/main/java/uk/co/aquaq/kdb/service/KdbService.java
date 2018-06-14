@@ -74,10 +74,10 @@ public class KdbService {
     private List<Map<String, Object>> generateFailureMessage(String jsonString, String startTime, String exceptionMessage) {
         List<Map<String, Object>> results = new ArrayList<>();
         Map<String, Object> resultsMap= new HashMap<>();
-        resultsMap.put("FailureMessage", "Failure in processing the query : "+jsonString+". Error:"+exceptionMessage);
-        resultsMap.put("Success", false);
-        resultsMap.put("RequestTime",startTime);
-        resultsMap.put("ResponseTime",Instant.now().toString());
+        resultsMap.put("result", "Failure in processing the query : "+jsonString+". Error:"+exceptionMessage);
+        resultsMap.put("success", false);
+        resultsMap.put("requestTime",startTime);
+        resultsMap.put("responseTime",Instant.now().toString());
         results.add(resultsMap);
 
         return results;
@@ -86,8 +86,8 @@ public class KdbService {
     private void addSuccessResponse(List<Map<String, Object>> results,String startTime ) {
         HashMap<String, Object> responseMap=new HashMap<>();
         updateStatus(results, responseMap);
-        responseMap.put("RequestTime",startTime);
-        responseMap.put("ResponseTime",Instant.now().toString());
+        responseMap.put("requestTime",startTime);
+        responseMap.put("responseTime",Instant.now().toString());
         embedResults(results, responseMap);
         results.add(0,responseMap);
 
@@ -98,20 +98,20 @@ public class KdbService {
         Object result=completeResults.get(0).get("result");
         results.clear();
         if(result!=null){
-            responseMap.put("Results",result);
+            responseMap.put("result",result);
         }
         else {
-            responseMap.put("Results", completeResults);
+            responseMap.put("result", completeResults);
         }
     }
 
     private void updateStatus(List<Map<String, Object>> results, HashMap<String, Object> responseMap) {
         if(null !=results.get(0).get("status")) {
-            responseMap.put("Success", results.get(0).get("status"));
+            responseMap.put("success", results.get(0).get("status"));
             results.remove(0);
         }
         else{
-            responseMap.put("Success", "true");
+            responseMap.put("success", "true");
         }
     }
 }

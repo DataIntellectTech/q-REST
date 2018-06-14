@@ -13,13 +13,15 @@ There is an `application.properties` file in the resources folder, connect the r
     server.port=8080
 
 
-##### EndPoints
+#### EndPoints
 The kdb-rest-service provides two endpoints:executeFunction and executeQuery. 
 
+
+##### ExecuteFunction Request
 The executeFunction provides a means to call a predefined function and pass parameters to the kdb instance. 
 For example this is the format of a request call a function called plus which passes two arguments labelled "xarg" and "yarg" with values 96.3 and 9.7:
 
-e.g.
+e.g. FunctionRequest
     
     {
     "function_name" : "plus",
@@ -29,11 +31,12 @@ e.g.
                 "yarg" : "9.7"
              }
     }
-
+    
+##### ExecuteQuery Request
 The executeQuery provides a means to provide a query to the kdb instance, by default this endpoint is disabled using the property freeform.query.mode.enabled, to enable change the value to true. 
 For example this is the format of a synchronous query request where the user expects a response to be returned:
 
-e.g.
+e.g. QueryRequest
        
 
     {
@@ -41,6 +44,66 @@ e.g.
         "query" : "select from table",
         "response" : true
     }
+
+##### Response from Rest API
+The json response for the endpoint calls will comprise of 4 parts: result, requestTime, responseTime, Success. 
+
+- Result is the response returned by KDB with some additional parsing.
+
+- RequestTime is the time the time the request began processing on the api.
+
+- ResponseTime is the time the response was returned from the api.
+
+- Success is a boolean which lets user know if the call to kdb was a success.
+
+
+e.g. "query" : "([]a:enlist\"hello world\")" this should return a single item
+    
+    
+    [
+        {
+            "result": [
+                {
+                    "a": "hello world"
+                }
+            ],
+            "requestTime": "2018-06-14T09:05:12.513Z",
+            "responseTime": "2018-06-14T09:05:12.528Z",
+            "success": true
+        }
+    ]
+"query" : "([]a:(\"hello\";\"world\"))" this should return a list of strings
+
+    [
+        {
+            "result": [
+                {
+                    "a": "hello"
+                },
+                {
+                    "a": "world"
+                }
+            ],
+            "requestTime": "2018-06-14T09:05:51.610Z",
+            "responseTime": "2018-06-14T09:05:51.620Z",
+            "success": true
+        }
+    ]   
+    
+Failure response will follow a similar pattern except result will the error returned
+
+"query" : "([]a:enlist”hello world”) ",
+    
+    [
+        {
+            "result": "error: failed to run query on server localhost:34203: world",
+            "requestTime": "2018-06-14T09:04:28.634Z",
+            "responseTime": "2018-06-14T09:04:28.649Z",
+            "success": false
+        }
+    ]
+    
+
 
 ##### Certificates
 The requests are sent in HTTPS format and to provide this the project has a self-signed certifiate embedded within. It is strongly recommended that you add your own certificate. Updating the certificate will require an update to the following properties in `application.properties`:

@@ -17,6 +17,12 @@ import java.net.UnknownHostException;
 @Data
 public class KdbConnectionWrapper {
 
+    private static String gatewayFunction;
+
+    @Value("${gateway.function}")
+    public void setGatewayFunction(String gatewayFunctionProp) {
+        gatewayFunction = gatewayFunctionProp;
+    }
     private static final Logger logger = LoggerFactory.getLogger(KdbConnectionWrapper.class);
     @Value("${kdb.host}")
     private String hostname;
@@ -73,7 +79,7 @@ public class KdbConnectionWrapper {
         c connectionToKdb=open();
         try {
             String value="value";
-            connectionToKdb.ks(queryRequest.getGatewayFunction(),
+            connectionToKdb.ks(gatewayFunction,
                     new Object[]{value.toCharArray(),queryRequest.getQuery().toCharArray()},new c.Dict(new String[]{"user"},new String[]{credentialValues.getUsername()}));
             return  connectionToKdb.k();
         }finally {
