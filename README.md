@@ -11,8 +11,23 @@ There is an `application.properties` file in the resources folder, connect the r
     kdb.username=admin
     kdb.password=admin
     server.port=8080
+    
+##### Certificates
+The requests are sent in HTTPS format and to provide this the project has a self-signed certifiate embedded within. It is strongly recommended that you add your own certificate. Updating the certificate will require an update to the following properties in `application.properties`:
 
+    security.require-ssl=true
+    server.ssl.key-store-type=PKCS12
+    server.ssl.key-store=classpath:keystore.p12
+    server.ssl.key-store-password=aquaq2018
+    server.ssl.key-alias=tomcat
 
+##### Authentication
+The rest service uses basic authentication and is using a single username and password which are configured in the `application.properties` file:
+
+    basic.authentication.user=user
+    basic.authentication.password=pass
+
+These value are provided within the header of the request, it is strongly recommended to invoke your own security if you use the project.
 #### EndPoints
 The kdb-rest-service provides two endpoints:executeFunction and executeQuery. 
 
@@ -104,25 +119,6 @@ Failure response will follow a similar pattern except result will the error retu
     ]
     
 
-
-##### Certificates
-The requests are sent in HTTPS format and to provide this the project has a self-signed certifiate embedded within. It is strongly recommended that you add your own certificate. Updating the certificate will require an update to the following properties in `application.properties`:
-
-    security.require-ssl=true
-    server.ssl.key-store-type=PKCS12
-    server.ssl.key-store=classpath:keystore.p12
-    server.ssl.key-store-password=aquaq2018
-    server.ssl.key-alias=tomcat
-
-##### Authentication
-The rest service uses basic authentication and is using a single username and password which are configured in the `application.properties` file:
-
-    basic.authentication.user=user
-    basic.authentication.password=pass
-
-These value are provided within the header of the request, it is strongly recommended to invoke your own security if you use the project.
-
-
 ## Deploying 
 
 There is a DockerFile within the project for deploying the project on docker.
@@ -145,6 +141,10 @@ Download the most recent jar from release section of github master (https://gith
 
 * -Dspring.config.location would be the location of the custom properties file.
 
+##Swagger UI
+The application has incorporated the Swagger UI utilities, to access the swagger page load the application and hit the swagger url:
+
+    https://<host>:<port>/swagger-ui.html
 
 ## Contributing 
 The branch is currently locked down and will require a pull request reviewed by a member of the AquaQ team before any changes can be committed.
