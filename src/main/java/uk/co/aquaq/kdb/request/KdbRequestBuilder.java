@@ -33,7 +33,7 @@ public class KdbRequestBuilder {
         StringBuilder stringBuilder= new StringBuilder("{\"");
         Iterator<Map.Entry<String, String>> iterator = argumentsMap.entrySet().iterator();
         Map.Entry<String, String> entry;
-        while(null != (entry = iterator.next())){
+        while(argumentsMap.size()!=0 && null != (entry = iterator.next())){
             stringBuilder.append(entry.getKey());
             stringBuilder.append("\":\"");
             stringBuilder.append(entry.getValue());
