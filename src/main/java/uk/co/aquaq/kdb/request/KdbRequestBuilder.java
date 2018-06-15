@@ -30,17 +30,21 @@ public class KdbRequestBuilder {
 
 
     private static String buildArgString(Map<String, String> argumentsMap){
-        StringBuilder stringBuilder= new StringBuilder("{\"");
+        StringBuilder stringBuilder= new StringBuilder("{");
         Iterator<Map.Entry<String, String>> iterator = argumentsMap.entrySet().iterator();
         Map.Entry<String, String> entry;
         while(argumentsMap.size()!=0 && null != (entry = iterator.next())){
+            stringBuilder.append("\"");
             stringBuilder.append(entry.getKey());
             stringBuilder.append("\":\"");
             stringBuilder.append(entry.getValue());
             if(iterator.hasNext()){
                 stringBuilder.append("\",\"");
             }
-            else break;
+            else {
+                stringBuilder.append("\"");
+                break;
+            }
         }
         stringBuilder.append("\"}");
 

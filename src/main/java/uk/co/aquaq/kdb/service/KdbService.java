@@ -27,19 +27,20 @@ public class KdbService {
 
     public List<Map<String, Object>>  executeFunction(FunctionRequest functionRequest, BasicCredentials credentialValues){
         String timestamp=Instant.now().toString();
-        KdbRequest kdbRequest= KdbRequestBuilder.buildKdbRequest(functionRequest,credentialValues);
         try {
+            validateFunctionRequest(functionRequest);
+            KdbRequest kdbRequest= KdbRequestBuilder.buildKdbRequest(functionRequest,credentialValues);
             return formatDeferredSyncResult(timestamp, kdbConnector.executeDeferredSyncFunction(kdbRequest));
         } catch (Exception exception) {
             logger.warn( exception.getMessage());
-            generateFailureMessage(functionRequest.getFunction_name(),timestamp,exception.getMessage());
+             return generateFailureMessage(functionRequest.getFunction_name(),timestamp,exception.getMessage());
         }
-        return null;
     }
 
     public Object executeQuery(QueryRequest queryRequest, BasicCredentials credentialValues){
         String timestamp=Instant.now().toString();
         try {
+            validateQueryRequest(queryRequest);
             if (queryRequest.getType().equals("sync") && queryRequest.getResponse().equals("true")) {
 
                 return formatDeferredSyncResult(timestamp, kdbConnector.executeDeferredSyncQuery(queryRequest, credentialValues));
@@ -55,6 +56,17 @@ public class KdbService {
         return new ArrayList<>();
     }
 
+    private void validateFunctionRequest(FunctionRequest functionRequest) throws Exception {
+        if (null==functionRequest.getFunction_name()|| null==functionRequest.getArguments()){
+            throw new Exception("Function request requires a function name and arguments in request");
+        }
+    }
+
+    private void validateQueryRequest(QueryRequest queryRequest) throws Exception {
+        if ((null == queryRequest.getQuery()) || (null == queryRequest.getType())||(null==queryRequest.getResponse())){
+            throw new Exception("Query request requires a query, type and response in request");
+        }
+    }
 
     private List<Map<String, Object>> formatDeferredSyncResult(String timestamp, Object result) throws UnsupportedEncodingException {
         ResultFormatter resultFormatter=new ResultFormatter();
