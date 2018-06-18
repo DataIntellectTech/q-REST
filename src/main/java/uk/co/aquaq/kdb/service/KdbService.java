@@ -58,13 +58,13 @@ public class KdbService {
 
     private void validateFunctionRequest(FunctionRequest functionRequest) throws Exception {
         if (null==functionRequest.getFunction_name()|| null==functionRequest.getArguments()){
-            throw new Exception("Function request requires a function name and arguments in request");
+            throw new Exception("Function request requires a function_name(String) and arguments(key pair values in an object<String,String>) in request");
         }
     }
 
     private void validateQueryRequest(QueryRequest queryRequest) throws Exception {
         if ((null == queryRequest.getQuery()) || (null == queryRequest.getType())||(null==queryRequest.getResponse())){
-            throw new Exception("Query request requires a query, type and response in request");
+            throw new Exception("Query request requires a query (String), type(String) and response(boolean) in request");
         }
     }
 

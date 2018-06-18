@@ -1,6 +1,6 @@
 # kdb-rest-service
 
-An open source REST service written in java used to connect to an instance of kdb using JSON. The REST service can provide a single query to run or call a function predefined on the instance of kdb.
+An open source REST service written in java (8) used to connect to an instance of kdb using JSON. The REST service can provide a single query to run or call a function predefined on the instance of kdb.
 
 ## Pre-requisite Configuration 
 ##### Properties
