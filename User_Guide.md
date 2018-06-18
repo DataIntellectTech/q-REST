@@ -5,20 +5,19 @@
 Kdb-rest-service is a java service that can connect to an instance of KDB and pass queries or functions with arguments. The rest-service offers the option make asynchronous or sunchronous calls if using the query or sychronous if using a query. The call for either synchronous call is actually a deferred synchronous whereby we use an asynchronous call to send the query followed by a synchronous call to collect the response. The response has a predefined format which is shown in the `Response` section at the bottom of the document.
 
 
-## Defining KDB Function
-On the kdb instance, the user will have to define a function to call. 
- 
- For example to define a function `plus`, it is required that the kdb function must parse the Json argument:
- 
- This can be done in a single function. 
- 
-    q)plus:{dict:"F"$.j.k x;+[dict`xarg;dict`yarg]} 
+## Defining the KDB Function
+On the kdb instance, the user will have to define a function to call. The function could be for any purpose within kdb but must accept an object , which a two element list where element 1 is the function name and element 2 is the arguments for the function. This object is sent along with the `gateway.function` and the `username` in the c.jar c.ks call.
 
-Or if preferred spit into two functions, one for parsing and then the core function. In this case we would be call `.rest.plus` in the JSON arguement.  
 
-    q).restcore.plus:{x+y} 
+By default the rest service has a property called  `gateway.function` in the `application.properties` file. This property sets the wrapping function for the function on the KDB instance.
 
-    q).rest.plus:{.restcore.plus .  ("F"$.j.k x)`xarg`yarg} 
+This value is defaulted to 
+    
+    gateway.function={[request;properties] @[value;`.aqrest.execute;{[e;request;properties] @[neg .z.w;`status`result!@[{(1b;value x)};request;{(0b;"error: ",x)}]]}] . (request;properties)}
+
+This gateway function will let the KDB instance know that the result of the function/query sent should be returned in a  dictionary containing two objects, a boolean to denote success or failure and results which could either be an object with the result query or an error. This object is then formatted to the response returned by the java.
+ 
+
 
 ## Function endpoint 
 
