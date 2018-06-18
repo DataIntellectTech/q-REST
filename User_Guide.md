@@ -6,8 +6,19 @@ Kdb-rest-service is a java service that can connect to an instance of KDB and pa
 
 
 ## Defining KDB Function
-If the user wishes to use the rest service to call a function, it should be noted that the function must be capable of handling the parameter.
+On the kdb instance, the user will have to define a function to call. 
+ 
+ For example to define a function `plus`, it is required that the kdb function must parse the Json argument:
+ 
+ This can be done in a single function. 
+ 
+    q)plus:{dict:"F"$.j.k x;+[dict`xarg;dict`yarg]} 
 
+Or if preferred spit into two functions, one for parsing and then the core function. In this case we would be call `.rest.plus` in the JSON arguement.  
+
+    q).restcore.plus:{x+y} 
+
+    q).rest.plus:{.restcore.plus .  ("F"$.j.k x)`xarg`yarg} 
 
 ## Function endpoint 
 
