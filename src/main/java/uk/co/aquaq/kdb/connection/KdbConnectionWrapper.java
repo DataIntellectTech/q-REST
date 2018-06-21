@@ -65,7 +65,7 @@ public class KdbConnectionWrapper {
     public Object executeDeferredSyncFunction(KdbRequest kdbRequest) throws c.KException , IOException{
         c connectionToKdb=open();
         try {
-            connectionToKdb.ks(kdbRequest.getGatewayFunction(),
+            connectionToKdb.ks(gatewayFunction,
                     new Object[]{kdbRequest.getFunctionName().toCharArray(),
                             kdbRequest.getArguments().toCharArray()},
                     kdbRequest.getCredentialDictionary());

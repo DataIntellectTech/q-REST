@@ -25,7 +25,7 @@ public class KdbService {
     private KdbConnectionWrapper kdbConnector;
     private static final Logger logger = LoggerFactory.getLogger(KdbConnectionWrapper.class);
 
-    public List<Map<String, Object>>  executeFunction(FunctionRequest functionRequest, BasicCredentials credentialValues){
+    public Map<String, Object>  executeFunction(FunctionRequest functionRequest, BasicCredentials credentialValues){
         String timestamp=Instant.now().toString();
         try {
             validateFunctionRequest(functionRequest);
@@ -68,11 +68,11 @@ public class KdbService {
         }
     }
 
-    private List<Map<String, Object>> formatDeferredSyncResult(String timestamp, Object result) throws UnsupportedEncodingException {
+    private Map<String, Object> formatDeferredSyncResult(String timestamp, Object result) throws UnsupportedEncodingException {
         ResultFormatter resultFormatter=new ResultFormatter();
         List<Map<String, Object>> results = resultFormatter.formatResult(result);
-        addSuccessResponse(results, timestamp);
-        return results;
+        Map<String, Object> response= buildResponseMap(results, timestamp);
+        return response;
     }
 
     private void create(String jsonString){
@@ -83,26 +83,23 @@ public class KdbService {
         }
     }
 
-    private List<Map<String, Object>> generateFailureMessage(String jsonString, String startTime, String exceptionMessage) {
-        List<Map<String, Object>> results = new ArrayList<>();
+    private Map<String, Object> generateFailureMessage(String jsonString, String startTime, String exceptionMessage) {
         Map<String, Object> resultsMap= new HashMap<>();
         resultsMap.put("result", "Failure in processing the query : "+jsonString+". Error:"+exceptionMessage);
         resultsMap.put("success", false);
         resultsMap.put("requestTime",startTime);
         resultsMap.put("responseTime",Instant.now().toString());
-        results.add(resultsMap);
 
-        return results;
+        return resultsMap;
     }
 
-    private void addSuccessResponse(List<Map<String, Object>> results,String startTime ) {
+    private Map<String, Object> buildResponseMap(List<Map<String, Object>> results, String startTime ) {
         HashMap<String, Object> responseMap=new HashMap<>();
         updateStatus(results, responseMap);
         responseMap.put("requestTime",startTime);
         responseMap.put("responseTime",Instant.now().toString());
         embedResults(results, responseMap);
-        results.add(0,responseMap);
-
+        return responseMap;
     }
 
     private void embedResults(List<Map<String, Object>> results, HashMap<String, Object> responseMap) {

@@ -39,14 +39,14 @@ public class KdbRequestBuilder {
             stringBuilder.append("\":\"");
             stringBuilder.append(entry.getValue());
             if(iterator.hasNext()){
-                stringBuilder.append("\",\"");
+                stringBuilder.append("\",");
             }
             else {
                 stringBuilder.append("\"");
                 break;
             }
         }
-        stringBuilder.append("\"}");
+        stringBuilder.append("}");
 
         return stringBuilder.toString();
     }

@@ -11,7 +11,7 @@ On the kdb instance, the user will have to define a function to call. The functi
 
 By default the rest service has a property called  `gateway.function` in the `application.properties` file. This property sets the wrapping function for the function on the KDB instance.
 
-This value is defaulted to 
+This value is defaulted to: 
     
     gateway.function={[request;properties] @[value;`.aqrest.execute;{[e;request;properties] @[neg .z.w;`status`result!@[{(1b;value x)};request;{(0b;"error: ",x)}]]}] . (request;properties)}
 
