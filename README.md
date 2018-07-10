@@ -1,4 +1,4 @@
-# kdb-rest-service
+# q-REST
 
 An open source REST service written in java 8 used to connect to an instance of kdb using JSON. The REST service can provide a single query to run or call a function predefined on the instance of kdb.
 
@@ -22,7 +22,7 @@ The requests are sent in HTTPS format and to provide this the project has a self
     server.ssl.key-alias=tomcat
 
 ##### Authentication
-The rest service uses basic authentication and is using a single username and password which are configured in the `application.properties` file:
+The q-REST service uses basic authentication and is using a single username and password which are configured in the `application.properties` file:
 
     basic.authentication.user=user
     basic.authentication.password=pass
@@ -31,7 +31,7 @@ These value are provided within the header of the request, it is strongly recomm
 
 ## EndPoints
 
-The kdb-rest-service provides two endpoints: executeFunction and executeQuery. 
+The q-REST service provides two endpoints: executeFunction and executeQuery. 
 
 ##### ExecuteFunction Request
 The executeFunction provides a means to call a predefined function and pass parameters to the kdb instance. 
@@ -61,7 +61,7 @@ e.g. QueryRequest
         "response" : true
     }
 
-##### Response from Rest API
+##### Response from q-REST API
 The json response for the endpoint calls will comprise of 4 parts: `result`, `requestTime`, `responseTime` and `success`. 
 
 - Result is the response returned by KDB with some additional parsing.
@@ -130,13 +130,13 @@ To run the application by command line:
 
 Either pull the code from github, update `application.properties` and maven clean install to create the new jar then run:
 
-    java -jar target\kdb-rest-service-1.1-SNAPSHOT.jar
+    java -jar target\q-REST-1.1-SNAPSHOT.jar
 
  OR
  
-Download the most recent jar from release section of github master (https://github.com/AquaQAnalytics/kdb-rest-service/releases/), create a new properties file in a location of your choice to override the default properties and run this command
+Download the most recent jar from release section of github master (https://github.com/AquaQAnalytics/q-REST/releases/), create a new properties file in a location of your choice to override the default properties and run this command
 
-    java -jar -Dspring.profiles.active=test -Dspring.config.location=C:\Programming\application-test.properties target\kdb-rest-service-1.1-SNAPSHOT.jar
+    java -jar -Dspring.profiles.active=test -Dspring.config.location=C:\Programming\application-test.properties target\q-REST-1.1-SNAPSHOT.jar
 
 * -Dspring.profiles.active would be the profile you wish to run the application with which would have its own `application-{profileName}.properties` file. 
 

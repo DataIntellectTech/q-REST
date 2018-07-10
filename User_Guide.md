@@ -1,15 +1,15 @@
-# KDB-Rest-Service User Guide
+# q-REST User Guide
 
 ## Overview
 
-Kdb-rest-service is a java service that can connect to an instance of KDB and pass queries or functions with arguments. The rest-service offers the option make asynchronous or sunchronous calls if using the query or sychronous if using a query. The call for either synchronous call is actually a deferred synchronous whereby we use an asynchronous call to send the query followed by a synchronous call to collect the response. The response has a predefined format which is shown in the `Response` section at the bottom of the document.
+q-REST is a java service that can connect to an instance of KDB and pass queries or functions with arguments. The q-REST service offers the option make asynchronous or sunchronous calls if using the query or sychronous if using a query. The call for either synchronous call is actually a deferred synchronous whereby we use an asynchronous call to send the query followed by a synchronous call to collect the response. The response has a predefined format which is shown in the `Response` section at the bottom of the document.
 
 
 ## Defining the KDB Function
 On the kdb instance, the user will have to define a function to call. The function could be for any purpose within kdb but must accept an object , which a two element list where element 1 is the function name and element 2 is the arguments for the function. This object is sent along with the `gateway.function` and the `username` in the c.jar c.ks call.
 
 
-By default the rest service has a property called  `gateway.function` in the `application.properties` file. This property sets the wrapping function for the function on the KDB instance.
+By default the q-REST service has a property called  `gateway.function` in the `application.properties` file. This property sets the wrapping function for the function on the KDB instance.
 
 This value is defaulted to: 
     
@@ -21,7 +21,7 @@ This gateway function will let the KDB instance know that the result of the func
 
 ## Function endpoint 
 
-To call a KDB+ function using the rest interface the user will have a to pass a Json object which will comprise of two parts- `function_name` and `arguments`. The `function_name` is the name of the function the user wishes the rest api to hit on the KDB+ instance. The `arguments` are the applicable arguments passed in by the user, the arguments list needs to be passed in even if the procedure being called does not accept arguments.
+To call a KDB+ function using the q-REST interface the user will have a to pass a Json object which will comprise of two parts- `function_name` and `arguments`. The `function_name` is the name of the function the user wishes the rest api to hit on the KDB+ instance. The `arguments` are the applicable arguments passed in by the user, the arguments list needs to be passed in even if the procedure being called does not accept arguments.
 
 #### Function Request with arguments
 
@@ -41,7 +41,7 @@ To call a KDB+ function using the rest interface the user will have a to pass a 
     }
 
 ## Query endpoint
-To call a KDB+ query using the rest interface the user will have a to pass a Json object which will comprise of three parts- `type`, `response` and `query`. The `type` referes to whether the user wishes for the call to be sychronous or asynchronous, `response` refers to whether the user expects a response to be returned and `query` is the query the user wishes to run on the KDB+ instance.
+To call a KDB+ query using the q-REST interface the user will have a to pass a Json object which will comprise of three parts- `type`, `response` and `query`. The `type` referes to whether the user wishes for the call to be sychronous or asynchronous, `response` refers to whether the user expects a response to be returned and `query` is the query the user wishes to run on the KDB+ instance.
 
 #### Query Request
    
@@ -82,7 +82,7 @@ For any query/function call requiring a response to be returned to the user, the
         }
     ]
 
-If a user fails to provide the correct parameters to the rest service an error will be thrown:
+If a user fails to provide the correct parameters to the q-REST service an error will be thrown:
 
 #### Invalid Function Request
     { 
