@@ -1,6 +1,6 @@
 package uk.co.aquaq.kdb.request;
 
-import com.kx.c;
+import kx.c;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.co.aquaq.kdb.security.BasicCredentials;
@@ -30,17 +30,21 @@ public class KdbRequestBuilder {
 
 
     private static String buildArgString(Map<String, String> argumentsMap){
-        StringBuilder stringBuilder= new StringBuilder("{\"");
+        StringBuilder stringBuilder= new StringBuilder("{");
         Iterator<Map.Entry<String, String>> iterator = argumentsMap.entrySet().iterator();
         Map.Entry<String, String> entry;
-        while(null != (entry = iterator.next())){
+        while(argumentsMap.size()!=0 && null != (entry = iterator.next())){
+            stringBuilder.append("\"");
             stringBuilder.append(entry.getKey());
-            stringBuilder.append("\":");
+            stringBuilder.append("\":\"");
             stringBuilder.append(entry.getValue());
             if(iterator.hasNext()){
-                stringBuilder.append(",\"");
+                stringBuilder.append("\",");
             }
-            else break;
+            else {
+                stringBuilder.append("\"");
+                break;
+            }
         }
         stringBuilder.append("}");
 

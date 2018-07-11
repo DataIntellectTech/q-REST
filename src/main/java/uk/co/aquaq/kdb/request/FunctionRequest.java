@@ -8,5 +8,5 @@ import java.util.Map;
 public class FunctionRequest {
 
     private String function_name;
-    private Map<String, String> arguments = new HashMap<>();
+    private Map<String, String> arguments;
 }

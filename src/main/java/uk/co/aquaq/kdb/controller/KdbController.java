@@ -31,10 +31,12 @@ public class KdbController {
 
     @CrossOrigin
     @RequestMapping(value = "/executeQuery", method = RequestMethod.POST)
-    public List<Map<String, String>> executeQuery(@RequestBody QueryRequest queryRequest){
+    public Object executeQuery(@RequestBody QueryRequest queryRequest,@RequestHeader("Authorization") String authString){
+        BasicCredentials authDetails =new BasicCredentials(authString);
+
         if (freeFormQueryEnabled) {
 
-            return kdbService.executeQuery(queryRequest);
+            return kdbService.executeQuery(queryRequest,authDetails);
         } else {
             throw new InvalidRequestException("Invalid Request Free form queries not enabled.");
         }

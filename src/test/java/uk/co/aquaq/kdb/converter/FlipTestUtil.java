@@ -1,6 +1,7 @@
 package uk.co.aquaq.kdb.converter;
 
-import com.kx.c;
+
+import kx.c;
 
 public final class FlipTestUtil {
 

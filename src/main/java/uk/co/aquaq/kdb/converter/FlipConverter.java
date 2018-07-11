@@ -1,6 +1,6 @@
 package uk.co.aquaq.kdb.converter;
 
-import com.kx.c;
+import kx.c;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ public final class FlipConverter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FlipConverter.class);
 
-    public List<Map<String, String>> convertFlipToRecordList(c.Flip flip){
+    public List<Map<String, Object>> convertFlipToRecordList(c.Flip flip){
         String columnHeaders = FlipConverter.getColumnNames(flip);
         List recordList=FlipConverter.getDataRows(flip);
         String[] parsedColumnHeaders = columnHeaders.split("[,]");
@@ -22,23 +22,22 @@ public final class FlipConverter {
         return populateRecordList(parsedColumnHeaders,recordList, flip);
     }
 
-    private  List<Map<String, String>> populateRecordList(String[] columnHeaders, List<String> records, c.Flip flip){
-        List<Map<String, String>> recordList = new ArrayList<>();
+    private  List<Map<String, Object>> populateRecordList(String[] columnHeaders, List<Object> records, c.Flip flip){
+        List<Map<String, Object>> recordList = new ArrayList<>();
         List<Object[]> tableDataList = FlipConverter.convertToDataArrays(flip);
-
         for(int rowPosition = 0; rowPosition < records.size(); rowPosition++) {
             Object[] dataRow = tableDataList.get(rowPosition);
-            Map<String,String> tableRecords= createTableRecordMap(columnHeaders, dataRow);
+            Map<String,Object> tableRecords= createTableRecordMap(columnHeaders, dataRow);
             recordList.add(rowPosition,tableRecords);
         }
 
         return recordList;
     }
 
-    private  Map<String, String> createTableRecordMap(String[] columnHeaders, Object[] dataRow) {
-        Map<String, String> tableRecords = new HashMap<>();
+    private  Map<String, Object> createTableRecordMap(String[] columnHeaders, Object[] dataRow) {
+        Map<String, Object> tableRecords = new HashMap<>();
         for(int elementPosition = 0; elementPosition < columnHeaders.length; elementPosition++){
-            tableRecords.put(columnHeaders[elementPosition], String.valueOf(dataRow[elementPosition]));
+            tableRecords.put(columnHeaders[elementPosition], dataRow[elementPosition]);
         }
 
         return tableRecords;

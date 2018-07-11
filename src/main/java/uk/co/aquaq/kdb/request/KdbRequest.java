@@ -1,6 +1,6 @@
 package uk.co.aquaq.kdb.request;
 
-import com.kx.c;
+import kx.c;
 import lombok.Data;
 
 @Data

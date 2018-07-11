@@ -1,12 +1,14 @@
 package uk.co.aquaq.kdb.connection;
 
+import kx.c;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
-import com.kx.c;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import uk.co.aquaq.kdb.request.KdbRequest;
+import uk.co.aquaq.kdb.request.QueryRequest;
+import uk.co.aquaq.kdb.security.BasicCredentials;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -15,6 +17,12 @@ import java.net.UnknownHostException;
 @Data
 public class KdbConnectionWrapper {
 
+    private static String gatewayFunction;
+
+    @Value("${gateway.function}")
+    public void setGatewayFunction(String gatewayFunctionProp) {
+        gatewayFunction = gatewayFunctionProp;
+    }
     private static final Logger logger = LoggerFactory.getLogger(KdbConnectionWrapper.class);
     @Value("${kdb.host}")
     private String hostname;
@@ -57,7 +65,7 @@ public class KdbConnectionWrapper {
     public Object executeDeferredSyncFunction(KdbRequest kdbRequest) throws c.KException , IOException{
         c connectionToKdb=open();
         try {
-            connectionToKdb.ks(kdbRequest.getGatewayFunction(),
+            connectionToKdb.ks(gatewayFunction,
                     new Object[]{kdbRequest.getFunctionName().toCharArray(),
                             kdbRequest.getArguments().toCharArray()},
                     kdbRequest.getCredentialDictionary());
@@ -67,12 +75,16 @@ public class KdbConnectionWrapper {
         }
     }
 
-    public Object syncQuery(String query) throws IOException, c.KException {
+    public Object executeDeferredSyncQuery(QueryRequest queryRequest,BasicCredentials credentialValues) throws c.KException , IOException{
         c connectionToKdb=open();
         try {
-            return c.td(connectionToKdb.k(query));
+            String value="value";
+            connectionToKdb.ks(gatewayFunction,
+                    new Object[]{value.toCharArray(),queryRequest.getQuery().toCharArray()},new c.Dict(new String[]{"user"},new String[]{credentialValues.getUsername()}));
+            return  connectionToKdb.k();
         }finally {
             connectionToKdb.close();
         }
     }
+
 }
