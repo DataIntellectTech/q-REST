@@ -5,6 +5,7 @@
 q-REST is a java service that can connect to an instance of KDB and pass queries or functions with arguments. The q-REST service offers the options to make asynchronous or deferred synchronous calls if using the query or deferred synchronous if using a function.   The response has a predefined format which is shown in the `Response` section at the bottom of the document.
 
 
+
 ## Defining the KDB Function
 On the kdb instance, the user will have to define a function to call. The function could be for any purpose within kdb but must accept an object , which a two element list where element 1 is the function name and element 2 is the arguments for the function. This object is sent along with the `gateway.function` and the `username` in the c.jar c.ks call.
 
@@ -41,7 +42,9 @@ To call a KDB+ function using the q-REST interface the user will have a to pass 
     }
 
 ## Query endpoint
+
 To call a KDB+ query using the q-REST interface the user will have a to pass a Json object which will comprise of three parts- `type`, `response` and `query`. The `type` refers to whether the user wishes for the call to be sychronous or asynchronous, `response` refers to whether the user expects a response to be returned and `query` is the query the user wishes to run on the KDB+ instance.
+
 
 #### Query Request
    
@@ -54,7 +57,9 @@ To call a KDB+ query using the q-REST interface the user will have a to pass a J
 
 ## Response returned to user 
 
+
 For any query/function call requiring a response to be returned to the user, the java code calls a deferred sync (first an async call is made with the request and then a sync call is made to collect the response). Regardless of whether the call is successful or unsuccessful the response should have 4 parts :`success, responseTime, requestTime and results` (as is common with json do not rely on the order).
+
 
   The call are by default wrapped in a  kdb function which will return a status denoting whether or not the call was successful as well as a result object. For successful calls the object will contain the data the user requested. This is returned in a dictionary and the java parse it back to a more readable output. 
     
