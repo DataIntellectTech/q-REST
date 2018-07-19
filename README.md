@@ -122,25 +122,29 @@ e.g `"query" : "([]a:enlist hello world)"` Failure response (query should have q
 
 ## Deploying 
 
-There is a DockerFile within the project for deploying the project on docker.
+Pre-requisite: java 8 installed
 
-Alternatively it can be run locally by providing the appropriate build configuration via command line or IDE. 
+1. Configure your own application.properties file to point to your specific kdb instance:
+    
+    kdb.host=localhost
+    kdb.port=6007
+    kdb.username=admin
+    kdb.password=admin
+    server.port=8080
 
-To run the application by command line:
+2. Download the most recent jar from release section of github master (https://github.com/AquaQAnalytics/q-REST/releases/)
 
-Either pull the code from github, update `application.properties` and maven clean install to create the new jar then run:
+3. Run following command from command prompt (ensure you select your application.properties file created in step 1):
 
-    java -jar target\q-REST-1.1-SNAPSHOT.jar
-
- OR
- 
-Download the most recent jar from release section of github master (https://github.com/AquaQAnalytics/q-REST/releases/), create a new properties file in a location of your choice to override the default properties and run this command
-
-    java -jar -Dspring.profiles.active=test -Dspring.config.location=C:\Programming\application-test.properties target\q-REST-1.1-SNAPSHOT.jar
-
+       java -jar -Dspring.profiles.active=test -Dspring.config.location=C:\Programming\application-test.properties target\q-REST-1.1-SNAPSHOT.jar
+       
 * -Dspring.profiles.active would be the profile you wish to run the application with which would have its own `application-{profileName}.properties` file. 
 
 * -Dspring.config.location would be the location of the custom properties file.
+
+Alternatively, you can download the source code from git hub, update the project with your changes, run a maven build, then run project from your chosen ide by executing the main springboot application class as seen within project.
+
+Project may also be run using a docker, please find a sample Dockerfile defined within project src.
 
 ## Swagger UI
 The application has incorporated the Swagger UI utilities, to access the swagger page load the application and hit the swagger url:
