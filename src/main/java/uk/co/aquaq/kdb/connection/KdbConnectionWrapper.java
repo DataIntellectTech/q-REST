@@ -1,6 +1,7 @@
 package uk.co.aquaq.kdb.connection;
 
-import kx.c;
+
+import com.kx.c;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;

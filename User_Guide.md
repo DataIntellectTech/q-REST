@@ -6,7 +6,7 @@ q-REST is a java service that can connect to an instance of KDB and pass queries
 
 
 ## Defining the KDB Function
-On the kdb instance, the user will have to define a function to call. The function could be for any purpose within kdb but must accept an object , which a two element list where element 1 is the function name and element 2 is the arguments for the function. This object is sent along with the `gateway.function` and the `username` in the c.jar c.ks call.
+On the kdb instance, the user will have to define a function to call. The function could be for any purpose within kdb but must accept an object , which a two element list where element 1 is the function name and element 2 is the arguments for the function. This object is sent along with the `gateway.function` and the `username` in the c.java c.ks call.
 
 
 By default the q-REST service has a property called  `gateway.function` in the `application.properties` file. This property sets the wrapping function for the function on the KDB instance.
