@@ -127,11 +127,11 @@ Pre-requisite: java 8 installed
 1. Configure your own application.properties file to point to your specific kdb instance:
     
 ```
-	kdb.host=localhost
-    kdb.port=6007
-    db.username=admin
-    kdb.password=admin
-    server.port=8080
+kdb.host=localhost
+kdb.port=6007
+db.username=admin
+db.password=admin
+server.port=8080
 ```
 
 2. Download the most recent jar from release section of github master (https://github.com/AquaQAnalytics/q-REST/releases/)
