@@ -142,9 +142,9 @@ Pre-requisite: java 8 installed
 
 * -Dspring.config.location would be the location of the custom properties file.
 
-Alternatively, you can download the source code from git hub, update the project with your changes, run a maven build, then run project from your chosen ide by executing the main springboot application class as seen within project.
+Alternatively, you can download the source code from git hub, update the project with your changes, run a maven build, then run project from your chosen ide by executing the main SpringBoot application class as seen within project.
 
-Project may also be run using a docker, please find a sample Dockerfile defined within project src.
+Project may also be run as a docker image, please find a sample Dockerfile defined within project.
 
 ## Swagger UI
 The application has incorporated the Swagger UI utilities, to access the swagger page load the application and hit the swagger url:
