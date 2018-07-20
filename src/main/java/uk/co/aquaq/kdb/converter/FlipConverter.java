@@ -1,6 +1,7 @@
 package uk.co.aquaq.kdb.converter;
 
-import kx.c;
+
+import com.kx.c;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
