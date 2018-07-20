@@ -124,9 +124,10 @@ e.g `"query" : "([]a:enlist hello world)"` Failure response (query should have q
 
 Pre-requisite: java 8 installed
 
-1. Configure your own application.properties file to point to your specific kdb instance:
+1. Configure your own application.properties file to point to your specific kdb instance and create an active profile:
     
 ```
+spring.profiles=test
 kdb.host=localhost
 kdb.port=6007
 db.username=admin
@@ -138,7 +139,7 @@ server.port=8080
 
 3. Run following command from command prompt (ensure you select your application.properties file created in step 1):
 
-       java -jar -Dspring.profiles.active=test -Dspring.config.location=C:\Programming\application-test.properties target\q-REST-1.1-SNAPSHOT.jar
+       java -jar -Dspring.profiles.active=test -Dspring.config.location=C:\Programming\application-test.properties q-REST-1.1-SNAPSHOT.jar
        
 * -Dspring.profiles.active would be the profile you wish to run the application with which would have its own `application-{profileName}.properties` file. 
 
