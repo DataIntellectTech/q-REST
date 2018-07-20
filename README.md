@@ -127,7 +127,7 @@ Pre-requisite: java 8 installed
 1. Configure your own application.properties file to point to your specific kdb instance and create an active profile:
     
 ```
-spring.profiles=test
+# application-test.properties
 kdb.host=localhost
 kdb.port=6007
 db.username=admin
