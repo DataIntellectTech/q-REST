@@ -104,7 +104,10 @@ public class KdbService {
 
     private void embedResults(List<Map<String, Object>> results, HashMap<String, Object> responseMap) {
         List<Map<String, Object>> completeResults = new ArrayList<>(results);
-        Object result=completeResults.get(0).get("result");
+        Object result = null;
+        if (!completeResults.isEmpty()) {
+            result=completeResults.get(0).get("result");
+        }
         results.clear();
         if(result!=null){
             responseMap.put("result",result);
