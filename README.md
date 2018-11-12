@@ -139,7 +139,7 @@ server.port=8080
 
 3. Run following command from command prompt (ensure you select your application.properties file created in step 1):
 
-       java -jar -Dspring.profiles.active=test -Dspring.config.location=C:\Programming\application-test.properties q-REST-1.1-SNAPSHOT.jar
+       java -jar -Dspring.profiles.active=test -Dspring.config.location=PathToFile\application.properties q-REST-1.0.0_RELEASE.jar
        
 * -Dspring.profiles.active would be the profile you wish to run the application with which would have its own `application-{profileName}.properties` file. 
 
