@@ -37,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String basicAuthUsername;
     @Value("${basic.authentication.password}")
     private String basicAuthPassword;
-    @Value("${authorisation.type}")
+    @Value("${authentication.type}")
     private String authType;
 
     @Override
