@@ -22,12 +22,31 @@ The requests are sent in HTTPS format and to provide this the project has a self
     server.ssl.key-alias=tomcat
 
 ##### Authentication
-The q-REST service uses basic authentication and is using a single username and password which are configured in the `application.properties` file:
+The q-REST service utilizes both basic and LDAP authentication methods. Basic authentication is set as default, however, if LDAP authentication is
+ required, this can be applied by changing the configuration of the 'authentication.type' property in the `application.properties` file from 'basic' to 'LDAP', and vice-versa:
+
+    authentication.type=LDAP    
+
+Basic authentication uses a single username and password, configured in the `application.properties` file:
 
     basic.authentication.user=user
     basic.authentication.password=pass
 
-These value are provided within the header of the request, it is strongly recommended to invoke your own security if you use the project.
+These value are provided within the header of the request. It is strongly recommended that you invoke your own security if you use the project.
+
+LDAP properties are currently configured to use an online LDAP test server, which can be found at: https://www.forumsys.com/tutorials/integration-how-to/ldap/online-ldap-test-server/ . The
+LDAP authentication process requires both a username and a password. Configuration details of
+required properties for LDAP authentication are also found within the `application.properties` file:
+
+    security.ldap.url=ldap://ldap.forumsys.com:389/dc=example,dc=com
+    managerDn=cn=read-only-admin,dc=example,dc=com
+    managerPassword=password
+    groupSearchFilter=uniqueMember={0}
+    userSearchFilter=uid={0}
+    userDnPatterns=uid={0}
+    
+Note that the 'authentication.type' property must be set to the correct authentication type; a mismatch between the 'authentication.type' configured and the authentication type of the entered 
+username and password combination will result in a failed login attempt.
 
 ## EndPoints
 
