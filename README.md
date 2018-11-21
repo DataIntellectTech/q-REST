@@ -22,21 +22,30 @@ The requests are sent in HTTPS format and to provide this the project has a self
     server.ssl.key-alias=tomcat
 
 ##### Authentication
-The q-REST service utilizes both basic and LDAP authentication methods. Basic authentication is set as default, however, if LDAP authentication is
- required, this can be applied by changing the configuration of the 'authentication.type' property in the `application.properties` file from 'basic' to 'LDAP', and vice-versa:
+The q-REST service offers both basic and LDAP authentication modes, configurable within the `application.properties` file.  
+ 
+ ###### Basic authentication
+ 
+Basic authentication is set as the default authentication mode:
 
-    authentication.type=LDAP    
-
+    authentication.type=basic
+    
 Basic authentication uses a single username and password, configured in the `application.properties` file:
 
     basic.authentication.user=user
     basic.authentication.password=pass
+    
+ ######LDAP authentication
+    
+LDAP authentication can be implemented by changing the configuration of the `authentication.type` property to `LDAP`:
 
-These value are provided within the header of the request. It is strongly recommended that you invoke your own security if you use the project.
+    authentication.type=LDAP   
 
-LDAP properties are currently configured to use an online LDAP test server, which can be found at: https://www.forumsys.com/tutorials/integration-how-to/ldap/online-ldap-test-server/ . The
-LDAP authentication process requires both a username and a password. Configuration details of
-required properties for LDAP authentication are also found within the `application.properties` file:
+LDAP properties are currently configured to use an online LDAP test server, which can be found at: https://www.forumsys.com/tutorials/integration-how-to/ldap/online-ldap-test-server/ . 
+
+LDAP authentication process requires both a username and a password. 
+
+Configuration details of properties for LDAP authentication are found within the `application.properties` file:
 
     security.ldap.url=ldap://ldap.forumsys.com:389/dc=example,dc=com
     managerDn=cn=read-only-admin,dc=example,dc=com
@@ -45,8 +54,9 @@ required properties for LDAP authentication are also found within the `applicati
     userSearchFilter=uid={0}
     userDnPatterns=uid={0}
     
-Note that the 'authentication.type' property must be set to the correct authentication type; a mismatch between the 'authentication.type' configured and the authentication type of the entered 
-username and password combination will result in a failed login attempt.
+For both authentication types, the username and password should be provided within the header of the request, encoded in Base64. 
+
+It is strongly recommended that you invoke your own security if you use the project.
 
 ## EndPoints
 
